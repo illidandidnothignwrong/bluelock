@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full-Screen Interactive Slider - Blue Lock Theme with Under-Image Price Tags</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-bluelock">
+  <div class="slider" tabindex="0">
+    <button id="prev" class="arrow">❮</button>
+    <button id="next" class="arrow">❯</button>
+    <div class="dots"></div>
+  </div>
+ <!-- Audio Player -->
+  <!-- Audio Player with Volume Slider -->
+  <div class="audio-player">
+    <button id="audio-toggle" class="audio-btn">🔇</button>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
+    <audio id="bg-audio" src="audio/vapo.mp3" loop autoplay muted></audio>
+  </div> 
+  <script>  
+    // Array of character images with names and prices
+const imageData = [
+  { src: 'images/yochi.jpg', name: 'Yoichi Isagi', price: 240000000 }, // Bastard München
+  { src: 'images/bachira.jpeg', name: 'Meguru Bachira', price: 120000000 }, // FC Barcha
+  { src: 'images/itoshirin.jpg', name: 'Rin Itoshi', price: 240000000 }, // Paris X Gen
+  { src: 'images/Ryusei Shido.png   ', name: 'Ryusei Shido', price: 160000000 }, // Paris X Gen
+  { src: 'images/barou.jpg', name: 'Shoei Baro', price: 150000000 }, // Ubers
+  { src: 'images/chigiri.webp', name: 'Hyoma Chigiri', price: 90000000 }, // Manshine City
+  { src: 'images/reo.jpg', name: 'Reo Mikage', price: 78000000 }, // Manshine City
+  { src: 'images/kunigami.jpg', name: 'Rensuke Kunigami', price: 66000000 }, // Bastard München
+  { src: 'images/Eita.png', name: 'Eita Otoya', price: 63000000 }, // FC Barcha
+  { src: 'images/oliveraiku.png', name: 'Oliver Aiku', price: 60000000 }, // Ubers
+  { src: 'images/tabito.png', name: 'Tabito Karasu', price: 55000000 }, // Paris X Gen
+  { src: 'images/gingamaru.webp', name: 'Gin Gagamaru', price: 50000000 }, // Bastard München
+  { src: 'images/JyubeiAryu.webp', name: 'Jyubei Aryu', price: 45000000 }, // Marseille
+  { src: 'images/KenyuYukimiya.webp', name: 'Kenyu Yukimiya', price: 42000000 }, // Bastard München
+  { src: 'images/IkkiNiko.webp', name: 'Ikki Niko', price: 40000000 }, // Ubers
+  { src: 'images/YoHiori.jpg', name: 'Yo Hiori', price: 39000000 }, // Bastard München
+ /* { src: 'images/photo17.jpg', name: 'Shuto Sendo', price: 37000000 }, // Ubers
+  { src: 'images/photo18.jpg', name: 'Ranze Kurona', price: 35000000 }, // Bastard München
+  { src: 'images/photo19.jpg', name: 'Zantetsu Tsurugi', price: 33000000 }, // Paris X Gen
+  { src: 'images/photo20.jpg', name: 'Gen Fukaku', price: 28000000 }, // Ubers
+  { src: 'images/photo21.jpg', name: 'Jingo Raichi', price: 27000000 }, // Bastard München
+  { src: 'images/photo22.jpg', name: 'Jin Kiyora', price: 26000000 }, // Bastard München
+  { src: 'images/photo23.jpg', name: 'Nijiro Nanase', price: 25000000 }, // Paris X Gen
+  { src: 'images/photo24.jpg', name: 'Seishiro Nagi', price: 24000000 }, // Manshine City
+  { src: 'images/photo25.jpg', name: 'Aoshi Tokimitsu', price: 22000000 }, // Paris X Gen
+  { src: 'images/photo26.jpg', name: 'Haru Hayate', price: 20000000 }, // FC Barcha
+  { src: 'images/photo27.jpg', name: 'Kazuma Nio', price: 18000000 }, // Manshine City
+  { src: 'images/photo28.jpg', name: 'Miroku Darai', price: 15000000 }, // FC Barcha
+  { src: 'images/photo29.jpg', name: 'Reiji Hiiragi', price: 11000000 }, // Manshine City
+  { src: 'images/photo30.jpg', name: 'Junichi Wanima', price: 8200000 }, // Manshine City
+  { src: 'images/photo31.jpg', name: 'Aiki Himizu', price: 7000000 }, // FC Barcha
+  { src: 'images/photo32.jpg', name: 'Shizuka Haiji', price: 6000000 }, // FC Barcha
+  { src: 'images/photo33.jpg', name: 'Kento Cho', price: 5000000 }, // Paris X Gen
+  { src: 'images/photo34.jpg', name: 'Itsuki Wakatsuki', price: 5000000 }, // FC Barcha
+  { src: 'images/photo35.jpg', name: 'Teru Kitsunezato', price: 4000000 }, // FC Barcha
+  { src: 'images/photo36.jpg', name: 'Hajime Nishioka', price: 3000000 }, // Manshine City
+  { src: 'images/photo37.jpg', name: 'Gurimu Igarashi', price: 3000000 }, // Bastard München
+-*/];
+
+    const slider = document.querySelector('.slider');
+    const dotsContainer = document.querySelector('.dots');
+    let currentIndex = 0;
+
+    // Create slides and dots
+    imageData.forEach((item, idx) => {
+      // Slide wrapper
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('slide');
+      if (idx === 0) wrapper.classList.add('active');
+
+      // Image element
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = item.name;
+
+      // Caption / price tag under image
+      const caption = document.createElement('div');
+      caption.classList.add('caption');
+      caption.textContent = `${item.name} – ¥${item.price.toLocaleString()}`;  // Using yen symbol
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(caption);
+      slider.appendChild(wrapper);
+
+      // Dot
+      const dot = document.createElement('span');
+      dot.classList.add('dot');
+      if (idx === 0) dot.classList.add('active');
+      dot.dataset.index = idx;
+      dotsContainer.appendChild(dot);
+    });
+
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+
+    function showSlide(idx) {
+      slides.forEach(s => s.classList.remove('active'));
+      dots.forEach(d => d.classList.remove('active'));
+      slides[idx].classList.add('active');
+      dots[idx].classList.add('active');
+      currentIndex = idx;
+    }
+
+    // Initial slide
+    showSlide(0);
+
+    document.getElementById('prev').addEventListener('click', () => {
+      showSlide((currentIndex - 1 + slides.length) % slides.length);
+    });
+    document.getElementById('next').addEventListener('click', () => {
+      showSlide((currentIndex + 1) % slides.length);
+    });
+
+    // Keyboard navigation
+    slider.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') document.getElementById('prev').click();
+      if (e.key === 'ArrowRight') document.getElementById('next').click();
+    });
+
+    // Dot navigation
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => showSlide(Number(dot.dataset.index)));
+    });
+
+    // Touch/swipe support
+    let startX = 0;
+    let isDragging = false;
+    slider.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+    });
+    slider.addEventListener('touchmove', e => {
+      if (!isDragging) return;
+      const diff = e.touches[0].clientX - startX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) document.getElementById('prev').click();
+        else document.getElementById('next').click();
+        isDragging = false;
+      }
+    });
+    slider.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // Audio and Volume Control
+    const audio = document.getElementById('bg-audio');
+    const btn = document.getElementById('audio-toggle');
+    const volSlider = document.getElementById('volume-slider');
+    
+    volSlider.addEventListener('input', () => {
+      audio.volume = volSlider.value;
+    });
+
+    btn.addEventListener('click', () => {
+      if (audio.muted) {
+        audio.muted = false;
+        audio.play();
+        btn.textContent = '🔊';
+      } else {
+        audio.muted = true;
+        btn.textContent = '🔇';
+      }
+    });   
+      
+    // Attempt to play on user interaction
+    document.body.addEventListener('click', () => {
+      if (audio.paused) audio.play();
+    }, { once: true });
+    
+  </script>
+</body>
+</html>

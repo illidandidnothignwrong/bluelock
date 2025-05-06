@@ -1,0 +1,114 @@
+/* styles.css */
+:root {
+  --bluelock-bg: #0A0F3B;
+  --bluelock-panel: #112954;
+  --bluelock-highlight: #3083DC;
+  --bluelock-text: #F0F4FC;
+  --bluelock-accent: #FFD700;
+}
+
+body.theme-bluelock {
+  margin: 0;
+  background: var(--bluelock-bg);
+  color: var(--bluelock-text);
+}
+
+.slider {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.slide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  max-width: 90vw;
+  height: auto;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.slide img {
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.caption {
+  margin-top: 10px;
+  background: var(--bluelock-panel);
+  color: var(--bluelock-accent);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  border: 1px solid var(--bluelock-accent);
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bluelock-highlight);
+  color: var(--bluelock-bg);
+  border: 2px solid var(--bluelock-accent);
+  font-size: 2.5rem;
+  padding: 0.8rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  z-index: 2;
+}
+
+.arrow:hover {
+  transform: translateY(-50%) scale(1.2);
+  background: var(--bluelock-accent);
+}
+
+#prev { left: 20px; }
+#next { right: 20px; }
+
+.dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--bluelock-accent);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dot.active {
+  background: var(--bluelock-accent);
+}
+/* Audio Player Styles */
+.audio-player { position: fixed; top: 20px; right: 20px; z-index: 3; }
+.audio-btn { background: var(--bluelock-panel); color: var(--bluelock-accent); border: 2px solid var(--bluelock-accent); border-radius: 50%; padding: 0.5rem; font-size: 1.2rem; cursor: pointer; transition: background .3s; }
+.audio-btn:hover { background: var(--bluelock-accent); color: var(--bluelock-bg); }
